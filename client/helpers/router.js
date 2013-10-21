@@ -23,4 +23,5 @@ Meteor.Router.filters({
 });
 
 Meteor.Router.filter(
-	'requireLogin', {only: 'postSubmit'});
+	'requireLogin', {only: 'postSubmit'}
+);
