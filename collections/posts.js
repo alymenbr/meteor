@@ -1,5 +1,19 @@
 Posts = new Meteor.Collection('posts');
 
+Posts.allow({
+  update: ownsDocument,
+  remove: ownsDocument
+});
+
+Posts.deny({
+  update: function(userId, post, fieldNames){
+    // may only edit the following fields:
+    return (_.without(fieldnames, 'url', 'title').length > 0  );
+  },
+  
+  remove: ownsDocument
+});
+
 Meteor.methods({
   post: function(postAttributes) {
     var user = Meteor.user();
@@ -28,10 +42,6 @@ Meteor.methods({
       submitted: new Date().getTime()
     });
 
-
-
-
-
      // wait for 5 seconds
     if (! this.isSimulation) {
       var Future = Npm.require('fibers/future');
@@ -41,10 +51,6 @@ Meteor.methods({
       }, 5 * 1000);
       future.wait();
     }
-
-
-
-
 
     var postId = Posts.insert(post);
 
